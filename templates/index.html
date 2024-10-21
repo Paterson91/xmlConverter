@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>DNA to RNA XML Generator</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Generate RNA Patent XML</h1>
+        <h1>from DNA/RNA Sequences</h1>
+        <form method="POST" action="/">
+            <label for="sequences">Enter DNA/RNA sequences (one per line):</label>
+            <textarea id="sequences" name="sequences" rows="10" required></textarea>
+            <button type="submit">Generate XML</button>
+        </form>
+
+        {% if xml_content %}
+            <div class="output-container">
+                <h2>Generated XML</h2>
+                <textarea rows="20" readonly>{{ xml_content }}</textarea>
+                <a href="{{ url_for('download_file', filename=filename) }}" class="download-button">Download XML</a>
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>
