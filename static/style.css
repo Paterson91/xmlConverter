@@ -25,6 +25,10 @@ h1 {
     margin-bottom: 20px;
 }
 
+.form-group {
+    margin-bottom: 20px;
+}
+
 label {
     display: block;
     margin-bottom: 8px;
@@ -32,16 +36,21 @@ label {
     color: #555;
 }
 
+input[type="text"],
 textarea {
     width: 100%;
     padding: 10px;
     border: 1px solid #ddd;
     border-radius: 4px;
-    resize: vertical;
     margin-bottom: 20px;
-    font-family: monospace;
+    font-family: Arial, sans-serif;
     font-size: 14px;
     box-sizing: border-box;
+}
+
+textarea {
+    resize: vertical;
+    font-family: monospace;
 }
 
 button {
@@ -81,3 +90,14 @@ button:hover {
 .download-button:hover {
     background-color: #218838;
 }
+
+pre {
+    background: #f4f4f9;
+    padding: 15px;
+    border-radius: 4px;
+    max-height: 300px;
+    overflow-y: auto;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+

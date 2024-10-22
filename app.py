@@ -12,14 +12,14 @@ def dna_to_rna(dna_sequence):
     """Convert a DNA sequence to an RNA sequence by replacing T with U."""
     return dna_sequence.replace('T', 'U').replace('t', 'u')
 
-def create_xml_output(sequences):
+def create_xml_output(sequences, applicant_file_reference, applicant_name, invention_title, file_name):
     st26 = ET.Element("ST26SequenceListing", 
                       {
                           "originalFreeTextLanguageCode": "en",
                           "dtdVersion": "V1_3",
-                          "fileName": "5113P_GB.xml",
-                          "softwareName": "WIPO Sequence",
-                          "softwareVersion": "2.3.0",
+                          "fileName": file_name,
+                          "softwareName": "InSilico Consulting Limited Sequence",
+                          "softwareVersion": "0.0.1",
                           "productionDate": datetime.today().strftime('%Y-%m-%d')
                       })
     
@@ -27,13 +27,13 @@ def create_xml_output(sequences):
     ET.SubElement(app_id, "IPOfficeCode").text = "GB"
     ET.SubElement(app_id, "ApplicationNumberText")
     ET.SubElement(app_id, "FilingDate")
-    ET.SubElement(st26, "ApplicantFileReference").text = "5113P/GB"
+    ET.SubElement(st26, "ApplicantFileReference").text = applicant_file_reference
     priority_app_id = ET.SubElement(st26, "EarliestPriorityApplicationIdentification")
     ET.SubElement(priority_app_id, "IPOfficeCode").text = "GB"
     ET.SubElement(priority_app_id, "ApplicationNumberText").text = "2306589.9"
     ET.SubElement(priority_app_id, "FilingDate").text = "2023-05-04"
-    ET.SubElement(st26, "ApplicantName", {"languageCode": "en"}).text = "ARGONAUTE RNA LIMITED"
-    ET.SubElement(st26, "InventionTitle", {"languageCode": "en"}).text = "DUAL SILENCING"
+    ET.SubElement(st26, "ApplicantName", {"languageCode": "en"}).text = applicant_name
+    ET.SubElement(st26, "InventionTitle", {"languageCode": "en"}).text = invention_title
     ET.SubElement(st26, "SequenceTotalQuantity").text = str(len(sequences))
     
     for seq_id, dna_sequence in enumerate(sequences, start=1):
@@ -62,6 +62,7 @@ def create_xml_output(sequences):
     pretty_xml = reparsed.toprettyxml(indent="    ")
     return pretty_xml
 
+
 def save_xml_to_file(xml_content, filename='5113P_GB.xml'):
     file_path = os.path.join(OUTPUT_FOLDER, filename)
     with open(file_path, 'w', encoding='utf-8') as f:
@@ -74,9 +75,14 @@ def save_xml_to_file(xml_content, filename='5113P_GB.xml'):
 def index():
     if request.method == 'POST':
         sequences = request.form['sequences'].strip().splitlines()
+        applicant_file_reference = request.form['applicantFileReference'].strip()
+        applicant_name = request.form['applicantName'].strip()
+        invention_title = request.form['inventionTitle'].strip()
+        download_file_name = request.form['downloadFileName'].strip()
+
         if sequences:
-            xml_content = create_xml_output(sequences)
-            output_filename = save_xml_to_file(xml_content)
+            xml_content = create_xml_output(sequences, applicant_file_reference, applicant_name, invention_title, download_file_name)
+            output_filename = save_xml_to_file(xml_content, download_file_name)
             return render_template('index.html', xml_content=xml_content, filename=output_filename)
     return render_template('index.html', xml_content=None)
 

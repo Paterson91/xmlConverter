@@ -1,24 +1,48 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>DNA to RNA XML Generator</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XML Sequence Generator</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}?v=1.0">
 </head>
 <body>
     <div class="container">
-        <h1>Generate RNA Patent XML</h1>
-        <h1>from DNA/RNA Sequences</h1>
-        <form method="POST" action="/">
-            <label for="sequences">Enter DNA/RNA sequences (one per line):</label>
-            <textarea id="sequences" name="sequences" rows="10" required></textarea>
+        <h1>XML Sequence Generator</h1>
+        <form method="POST">
+            <div class="form-group">
+                <label for="applicantFileReference">Applicant File Reference:</label>
+                <input type="text" id="applicantFileReference" name="applicantFileReference" value="5113P/GB" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="applicantName">Applicant Name:</label>
+                <input type="text" id="applicantName" name="applicantName" value="ARGONAUTE RNA LIMITED" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="inventionTitle">Invention Title:</label>
+                <input type="text" id="inventionTitle" name="inventionTitle" value="DUAL SILENCING" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="downloadFileName">Download File Name:</label>
+                <input type="text" id="downloadFileName" name="downloadFileName" value="5113P_GB.xml" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="sequences">Enter DNA Sequences (one per line):</label>
+                <textarea id="sequences" name="sequences" rows="10" required></textarea>
+            </div>
+            
             <button type="submit">Generate XML</button>
         </form>
-
+        
         {% if xml_content %}
             <div class="output-container">
-                <h2>Generated XML</h2>
-                <textarea rows="20" readonly>{{ xml_content }}</textarea>
-                <a href="{{ url_for('download_file', filename=filename) }}" class="download-button">Download XML</a>
+                <h2>Generated XML:</h2>
+                <pre>{{ xml_content }}</pre>
+                <a class="download-button" href="{{ url_for('download_file', filename=filename) }}">Download XML File</a>
             </div>
         {% endif %}
     </div>
